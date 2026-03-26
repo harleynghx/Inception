@@ -1,0 +1,21 @@
+# --- System & IDE Files ---
+.vscode-server/
+.vscode/
+.copilot/
+.cache/
+.bash_history
+.bash_logout
+.bashrc
+.profile
+.wget-hsts
+.sudo_as_admin_successful
+
+# --- Project Secrets (42 Rule) ---
+.env
+srcs/.env
+
+# --- Website Data / Volumes (42 Rule) ---
+data/
+
+# --- OS Junk ---
+.DS_Store
