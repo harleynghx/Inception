@@ -3,14 +3,15 @@
 # Give MariaDB a few seconds to fully boot up before trying to connect
 sleep 10
 
+# Ensure we are in the correct directory before checking for the config file
+cd /var/www/html || exit
+
 # Check if WordPress is already downloaded to avoid reinstalling on every restart
 if [ ! -f wp-config.php ]; then
     echo "Downloading WordPress..."
-    # Download the core files
     wp core download --allow-root
 
     echo "Creating wp-config.php..."
-    # Link it to the database using your .env variables
     wp config create --dbname=${SQL_DATABASE} \
                      --dbuser=${SQL_USER} \
                      --dbpass=${SQL_PASSWORD} \
@@ -18,7 +19,6 @@ if [ ! -f wp-config.php ]; then
                      --allow-root
 
     echo "Installing WordPress..."
-    # Run the famous "5-minute install" instantly
     wp core install --url=${WP_URL} \
                     --title="${WP_TITLE}" \
                     --admin_user=${WP_ADMIN_USER} \
@@ -27,11 +27,13 @@ if [ ! -f wp-config.php ]; then
                     --allow-root
 
     echo "Creating a second standard user..."
-    # Create a normal user (Subject requirement)
-    wp user create standarduser standarduser@student.42.fr --user_pass=standardpassword --role=author --allow-root
+    wp user create ${WP_USER} ${WP_USER_EMAIL} --user_pass=${WP_USER_PASSWORD} --role=author --allow-root
 fi
 
 echo "WordPress setup complete! Starting PHP-FPM..."
+
+# Ensure proper permissions so that www-data can write to the WordPress files
+chown -R www-data:www-data /var/www/html
 
 # Start PHP-FPM in the foreground to keep the container alive
 exec /usr/sbin/php-fpm7.4 -F

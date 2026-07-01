@@ -1,4 +1,11 @@
 # --- System & IDE Files ---
+.antigravity-ide-server/
+.antigravity-server/
+.gemini/
+.docker/
+.dotnet/
+.gitconfig
+.lesshst
 .vscode-server/
 .vscode/
 .copilot/

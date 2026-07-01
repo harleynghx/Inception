@@ -4,8 +4,9 @@ FROM debian:bullseye
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y nginx openssl
 
-# Create the folder for SSL certificates
-RUN mkdir -p /etc/nginx/ssl
+# Create the folder for SSL certificates and remove default site
+RUN mkdir -p /etc/nginx/ssl && \
+    rm -f /etc/nginx/sites-enabled/default
 
 # Generate a self-signed SSL certificate
 # -subj fills in the 'Country', 'State', 'Login', etc., automatically
