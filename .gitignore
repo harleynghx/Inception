@@ -26,3 +26,4 @@ data/
 
 # --- OS Junk ---
 .DS_Store
+.ssh/
